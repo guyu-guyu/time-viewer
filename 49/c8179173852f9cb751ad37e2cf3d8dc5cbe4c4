@@ -1,0 +1,14 @@
+.gitignore
+  h_d9088715075e51 1-2
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "49c8179173852f9cb751ad37e2cf3d8dc5cbe4c4",
+  "prompts": {},
+  "humans": {
+    "h_d9088715075e51": {
+      "author": "leijieliu <leijieliu@tencent.com>"
+    }
+  }
+}
