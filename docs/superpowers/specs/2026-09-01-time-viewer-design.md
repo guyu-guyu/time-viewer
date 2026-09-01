@@ -126,7 +126,7 @@ export const entries = pgTable("entries", {
 | 函数 | 返回 | 服务于 |
 |---|---|---|
 | `listEntries(filter, {limit, offset})` | 分页的原始记录 DTO | 明细列表 |
-| `getDayEntries(date)` | 与该日**有重叠**的全部记录（`startedAt < dayEnd AND endedAt > dayStart`） | 时间轴 |
+| `getDayEntries(date)` | `startedAt` 落在该日的全部记录（与归属规则一致） | 时间轴 |
 | `getDailyTotals(from, to, filter)` | `[{date, totalMinutes, byCategory}]` | 月历 + 趋势图 + 首页 |
 | `getCategoryBreakdown(from, to, filter)` | `[{category, minutes}]` | 占比图 + 首页 |
 | `getActivityBreakdown(from, to, filter)` | `[{activity, category, minutes}]` | 活动排名 |
@@ -145,6 +145,9 @@ URL searchParams 驱动，例如：
 ```
 
 - `lib/filters.ts` 统一解析：**非法或缺失参数一律回退到该视图默认值，永不 500**（如 `from=abc` → 忽略该参数）。
+- **参数分两层**：
+  - **共享参数**（所有视图语义一致，切换视图时由侧边栏链接携带）：`category`、`q`。
+  - **视图主参数**（各视图自己的时间导航）：timeline 用 `date`（单日）；calendar 用 `month`（`YYYY-MM`）；charts / list 用 `from` + `to`；list 另有 `page` / `pageSize`。
 - 各视图默认区间：时间轴 = 今天；月历 = 当月；图表 = 近 30 天；列表 = 最近 7 天。
 - 共享 `components/filter-bar.tsx`：日期区间选择、分类下拉（来自 `getCategories()`）、关键词输入，通过改写 searchParams 生效。
 - 视图特有导航（时间轴前一天/后一天、月历上月/下月、列表分页）放视图目录内部，同样走 searchParams。
@@ -158,6 +161,7 @@ URL searchParams 驱动，例如：
 ### ① timeline 日视图时间轴 — `/views/timeline?date=2026-09-01`
 
 - 24 小时纵向轴；活动块按起止时间定位、高度∝时长、按分类着色（`lib/colors.ts`）；空隙留白。
+- 跨午夜区间按开始日归属：完整时长计入开始日，时间轴上超出当日 24:00 的部分截断显示。
 - 顶部：前一天/后一天导航 + 当天各分类时长小结。
 - Hover/点击显示活动名、起止时间、备注。
 
@@ -209,7 +213,7 @@ Recharts 三张图，共用筛选区间：
   - `time.ts`：时区天边界、跨午夜归属规则、区间计算
   - `colors.ts`：同一分类颜色稳定、未知分类有兜底色
 - **种子脚本** `scripts/seed.ts`：生成近 30 天仿真数据（合理分类/活动/备注/跨午夜区间）写入 Neon，供开发期视图调试。
-- **上线验证**：执行 `docs/doc.md` 第 7 节 curl 清单（`/` → 307、`/api/entries` 改为验证受保护页 307/401、CVE 头不穿透、缓存头无 CDN 命中）+ 人工检查登录后 RSC payload 只含 DTO 字段。
+- **上线验证**：执行 `docs/doc.md` 第 7 节 curl 清单并按本项目调整——受保护页（`/`、`/views/*`）未登录期望 307 → `/login`（本项目已无自定义 API 路由，原 `/api/entries` → 401 一项不再适用）；CVE 头不穿透；缓存头确认无 CDN 命中。外加人工检查登录后 RSC payload 只含 DTO 字段。
 
 ## 11. 环境变量与部署
 
