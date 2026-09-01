@@ -1,0 +1,19 @@
+docs/superpowers/specs/2026-09-01-time-viewer-design.md
+  s_0a2ad41fd1935a::t_a5d8e3a14117dc 1-236
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "f73416fe676cb4b17df32028b7e5104fa7697bb7",
+  "prompts": {},
+  "sessions": {
+    "s_0a2ad41fd1935a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2bc35f8c-8251-4d93-b63b-aaccb020eb74",
+        "model": "ep-glm53ioa"
+      },
+      "human_author": "leijieliu <leijieliu@tencent.com>"
+    }
+  }
+}
