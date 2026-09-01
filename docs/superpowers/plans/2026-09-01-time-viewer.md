@@ -156,7 +156,7 @@ git commit -m "脚手架：初始化 Next.js 15 + Tailwind + shadcn/ui + Drizzle
 - Create: `.env.example`（入库）
 - Create: `.env.local`（不入库，`.env*.local` 已被 gitignore）
 
-- [ ] **Step 1: 创建 `.env.example`**
+- [x] **Step 1: 创建 `.env.example`**
 
 ```bash
 # 会话 JWE 加解密密钥（必填）：node -e "console.log(require('crypto').randomBytes(32).toString('base64')"
@@ -176,7 +176,7 @@ DISPLAY_TZ=Asia/Shanghai
 cp .env.example .env.local
 ```
 
-- [ ] **Step 2: 生成 AUTH_SECRET 并填入 .env.local**
+- [x] **Step 2: 生成 AUTH_SECRET 并填入 .env.local**
 
 ```bash
 node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
@@ -206,7 +206,7 @@ curl -s https://api.github.com/users/<你的GitHub用户名> | grep '"id"'
 
 把数字填进 `.env.local` 的 `OWNER_GITHUB_ID`。
 
-- [ ] **Step 6: 提交（只有 .env.example）**
+- [x] **Step 6: 提交（只有 .env.example）**
 
 ```bash
 git add .env.example
@@ -225,7 +225,7 @@ git commit -m "配置：添加环境变量模板"
 
 前置：`.env.local` 的 `DATABASE_URL` 已填入 Neon 连接串（Neon 控制台 → Project → Connection string，用 pooled 连接串）。
 
-- [ ] **Step 1: 创建 `lib/schema.ts`**
+- [x] **Step 1: 创建 `lib/schema.ts`**
 
 ```ts
 import { bigint, index, pgTable, text, timestamp } from "drizzle-orm/pg-core";
@@ -245,7 +245,7 @@ export const entries = pgTable("entries", {
 ]);
 ```
 
-- [ ] **Step 2: 创建 `lib/db.ts`**
+- [x] **Step 2: 创建 `lib/db.ts`**
 
 ```ts
 import { neon } from "@neondatabase/serverless";
@@ -256,7 +256,7 @@ const sql = neon(process.env.DATABASE_URL!);
 export const db = drizzle(sql, { schema });
 ```
 
-- [ ] **Step 3: 创建 `drizzle.config.ts`**
+- [x] **Step 3: 创建 `drizzle.config.ts`**
 
 ```ts
 import { config } from "dotenv";
@@ -281,7 +281,7 @@ npx drizzle-kit migrate
 
 预期：`drizzle/0000_*.sql` 生成并应用到 Neon（CREATE TABLE entries + 两个索引）。
 
-- [ ] **Step 5: 提交**
+- [x] **Step 5: 提交**
 
 ```bash
 git add lib/schema.ts lib/db.ts drizzle.config.ts drizzle/
@@ -390,7 +390,7 @@ git commit -m "工具：30 天仿真数据种子脚本"
 - Create: `lib/time.ts`
 - Test: `lib/time.test.ts`
 
-- [ ] **Step 1: 创建 `lib/types.ts`（server/client 共享的纯类型）**
+- [x] **Step 1: 创建 `lib/types.ts`（server/client 共享的纯类型）**
 
 ```ts
 export type CommonFilter = { category: string | null; q: string | null };
@@ -416,7 +416,7 @@ export type CategoryTotal = { category: string; minutes: number };
 export type ActivityTotal = { activity: string; category: string; minutes: number };
 ```
 
-- [ ] **Step 2: 写失败测试 `lib/time.test.ts`**
+- [x] **Step 2: 写失败测试 `lib/time.test.ts`**
 
 ```ts
 import { describe, expect, it } from "vitest";
@@ -510,7 +510,7 @@ describe("formatDuration / formatTimeInTz", () => {
 });
 ```
 
-- [ ] **Step 3: 运行测试确认失败**
+- [x] **Step 3: 运行测试确认失败**
 
 ```bash
 npm test
@@ -518,7 +518,7 @@ npm test
 
 预期：FAIL，报错模块 `./time` 不存在。
 
-- [ ] **Step 4: 实现 `lib/time.ts`**
+- [x] **Step 4: 实现 `lib/time.ts`**
 
 ```ts
 export function getDisplayTz(): string {
@@ -634,7 +634,7 @@ export function formatTimeInTz(date: Date, tz = getDisplayTz()): string {
 }
 ```
 
-- [ ] **Step 5: 运行测试确认通过**
+- [x] **Step 5: 运行测试确认通过**
 
 ```bash
 npm test
@@ -642,7 +642,7 @@ npm test
 
 预期：全部 PASS。
 
-- [ ] **Step 6: 提交**
+- [x] **Step 6: 提交**
 
 ```bash
 git add lib/types.ts lib/time.ts lib/time.test.ts
@@ -657,7 +657,7 @@ git commit -m "工具：共享类型与时区/日期工具（TDD）"
 - Create: `lib/colors.ts`
 - Test: `lib/colors.test.ts`
 
-- [ ] **Step 1: 写失败测试 `lib/colors.test.ts`**
+- [x] **Step 1: 写失败测试 `lib/colors.test.ts`**
 
 ```ts
 import { describe, expect, it } from "vitest";
@@ -679,7 +679,7 @@ describe("categoryColor", () => {
 });
 ```
 
-- [ ] **Step 2: 运行测试确认失败**
+- [x] **Step 2: 运行测试确认失败**
 
 ```bash
 npm test
@@ -687,7 +687,7 @@ npm test
 
 预期：FAIL，模块 `./colors` 不存在。
 
-- [ ] **Step 3: 实现 `lib/colors.ts`**
+- [x] **Step 3: 实现 `lib/colors.ts`**
 
 ```ts
 export const PALETTE = [
@@ -713,7 +713,7 @@ export function categoryColor(category: string): string {
 }
 ```
 
-- [ ] **Step 4: 运行测试确认通过**
+- [x] **Step 4: 运行测试确认通过**
 
 ```bash
 npm test
@@ -721,7 +721,7 @@ npm test
 
 预期：全部 PASS。
 
-- [ ] **Step 5: 提交**
+- [x] **Step 5: 提交**
 
 ```bash
 git add lib/colors.ts lib/colors.test.ts
@@ -736,7 +736,7 @@ git commit -m "工具：分类稳定配色映射（TDD）"
 - Create: `lib/filters.ts`
 - Test: `lib/filters.test.ts`
 
-- [ ] **Step 1: 写失败测试 `lib/filters.test.ts`**
+- [x] **Step 1: 写失败测试 `lib/filters.test.ts`**
 
 ```ts
 import { describe, expect, it } from "vitest";
@@ -798,7 +798,7 @@ describe("parsePage", () => {
 });
 ```
 
-- [ ] **Step 2: 运行测试确认失败**
+- [x] **Step 2: 运行测试确认失败**
 
 ```bash
 npm test
@@ -806,7 +806,7 @@ npm test
 
 预期：FAIL，模块 `./filters` 不存在。
 
-- [ ] **Step 3: 实现 `lib/filters.ts`**
+- [x] **Step 3: 实现 `lib/filters.ts`**
 
 ```ts
 import { isValidDateStr, isValidMonthStr } from "./time";
@@ -848,7 +848,7 @@ export function parsePage(sp: SP, pageSize: number): { page: number; offset: num
 }
 ```
 
-- [ ] **Step 4: 运行测试确认通过**
+- [x] **Step 4: 运行测试确认通过**
 
 ```bash
 npm test
@@ -856,7 +856,7 @@ npm test
 
 预期：全部 PASS。
 
-- [ ] **Step 5: 提交**
+- [x] **Step 5: 提交**
 
 ```bash
 git add lib/filters.ts lib/filters.test.ts
@@ -874,7 +874,7 @@ git commit -m "工具：searchParams 筛选解析，非法参数一律回退默�
 - Create: `app/login/login-button.tsx`
 - Create: `middleware.ts`
 
-- [ ] **Step 1: 创建 `auth.ts`**
+- [x] **Step 1: 创建 `auth.ts`**
 
 ```ts
 import NextAuth from "next-auth";
@@ -901,7 +901,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 });
 ```
 
-- [ ] **Step 2: 创建 `app/api/auth/[...nextauth]/route.ts`**
+- [x] **Step 2: 创建 `app/api/auth/[...nextauth]/route.ts`**
 
 ```ts
 import { handlers } from "@/auth";
@@ -909,7 +909,7 @@ import { handlers } from "@/auth";
 export const { GET, POST } = handlers;
 ```
 
-- [ ] **Step 3: 创建登录页 `app/login/page.tsx`**
+- [x] **Step 3: 创建登录页 `app/login/page.tsx`**
 
 ```tsx
 import { LoginButton } from "./login-button";
@@ -942,7 +942,7 @@ export function LoginButton() {
 }
 ```
 
-- [ ] **Step 4: 创建 `middleware.ts`（体验层：未登录跳转，非安全边界）**
+- [x] **Step 4: 创建 `middleware.ts`（体验层：未登录跳转，非安全边界）**
 
 ```ts
 import { auth } from "@/auth";
@@ -970,7 +970,7 @@ npm run dev
 3. 用 DevTools 清掉 cookie（或无痕窗口）再访问 `/` → 再次跳 `/login`
 4. 把 `.env.local` 的 `OWNER_GITHUB_ID` 临时改成一个错误数字，重启 dev，重新登录 → 回到 `/login?error=AccessDenied`（白名单拒绝生效）。**验证完改回正确值。**
 
-- [ ] **Step 6: 提交**
+- [x] **Step 6: 提交**
 
 ```bash
 git add auth.ts middleware.ts app/login app/api
@@ -986,7 +986,7 @@ git commit -m "认证：GitHub OAuth 白名单 + 登录页 + middleware 跳转"
 
 安全要点（来自规格）：`"server-only"` 护栏；每个函数首行 `await requireOwner()`；throw 而非 redirect；DTO 显式列字段；聚合在 SQL 按 `DISPLAY_TZ` 分桶；区间换算为 `[dayStartInTz(from), dayStartInTz(addDay(to,1)))`。
 
-- [ ] **Step 1: 创建 `lib/dal.ts`**
+- [x] **Step 1: 创建 `lib/dal.ts`**
 
 ```ts
 import "server-only";
@@ -1167,7 +1167,7 @@ export async function getCategories(): Promise<string[]> {
 }
 ```
 
-- [ ] **Step 2: 类型检查**
+- [x] **Step 2: 类型检查**
 
 ```bash
 npx tsc --noEmit
@@ -1175,7 +1175,7 @@ npx tsc --noEmit
 
 预期：无错误。（DAL 的行为验证在 Task 12–15 的页面里对着种子数据进行，无法脱离会话单测。）
 
-- [ ] **Step 3: 提交**
+- [x] **Step 3: 提交**
 
 ```bash
 git add lib/dal.ts
