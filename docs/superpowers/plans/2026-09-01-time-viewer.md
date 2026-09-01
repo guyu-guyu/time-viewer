@@ -69,7 +69,7 @@
 - Modify: `.gitignore`（合并 create-next-app 的忽略项）
 - Create: `vitest.config.ts`
 
-- [ ] **Step 1: 在子目录中生成 Next.js 15 项目**
+- [x] **Step 1: 在子目录中生成 Next.js 15 项目**
 
 仓库已有文件（docs/、.git），create-next-app 不能在非空目录直接初始化，先在子目录生成再移入：
 
@@ -79,7 +79,7 @@ npx create-next-app@15 scaffold-tmp --ts --tailwind --eslint --app --no-src-dir 
 
 预期：生成 `scaffold-tmp/`，无交互提问（全部 flag 已指定 + `--yes`）。
 
-- [ ] **Step 2: 移入仓库根目录**
+- [x] **Step 2: 移入仓库根目录**
 
 ```bash
 mv scaffold-tmp/* .
@@ -91,14 +91,14 @@ rmdir scaffold-tmp
 
 预期：`app/`、`public/`、`node_modules/`、`package.json` 等出现在根目录；`.gitignore` 追加了 node_modules、.next、.env*.local 等条目。
 
-- [ ] **Step 3: 安装运行时与开发依赖**
+- [x] **Step 3: 安装运行时与开发依赖**
 
 ```bash
 npm i next-auth@beta drizzle-orm @neondatabase/serverless recharts lucide-react
 npm i -D drizzle-kit vitest tsx dotenv
 ```
 
-- [ ] **Step 4: 初始化 shadcn/ui 并添加所需组件**
+- [x] **Step 4: 初始化 shadcn/ui 并添加所需组件**
 
 ```bash
 npx shadcn@latest init -d -y
@@ -107,7 +107,7 @@ npx shadcn@latest add button card input select table badge separator -y
 
 预期：`components/ui/` 下出现 button/card/input/select/table/badge/separator 及依赖的 ui 组件。
 
-- [ ] **Step 5: 配置 Vitest**
+- [x] **Step 5: 配置 Vitest**
 
 创建 `vitest.config.ts`：
 
@@ -127,7 +127,7 @@ export default defineConfig({
 npm pkg set scripts.test="vitest run"
 ```
 
-- [ ] **Step 6: 验证构建与测试链路**
+- [x] **Step 6: 验证构建与测试链路**
 
 ```bash
 npm run build && npm test
@@ -141,7 +141,7 @@ npm list next
 
 预期：next ≥ 15.2.3（CVE-2025-29927 已修复的硬性要求）。
 
-- [ ] **Step 7: 提交**
+- [x] **Step 7: 提交**
 
 ```bash
 git add -A
