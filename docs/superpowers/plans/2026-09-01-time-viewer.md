@@ -1195,7 +1195,7 @@ git commit -m "数据访问层：requireOwner 安全边界与六个查询函数"
 - Delete: `app/page.tsx`（脚手架首页，与 `(dashboard)/page.tsx` 路由冲突）
 - Modify: `app/layout.tsx`（站点标题）
 
-- [ ] **Step 1: 创建四个视图的 manifest**
+- [x] **Step 1: 创建四个视图的 manifest**
 
 `app/(dashboard)/views/timeline/view.ts`：
 
@@ -1233,7 +1233,7 @@ import type { ViewManifest } from "@/lib/views/registry";
 export const manifest: ViewManifest = { id: "list", title: "明细", icon: List, order: 4 };
 ```
 
-- [ ] **Step 2: 创建 `lib/views/registry.ts`（唯一注册点）**
+- [x] **Step 2: 创建 `lib/views/registry.ts`（唯一注册点）**
 
 ```ts
 import type { LucideIcon } from "lucide-react";
@@ -1254,7 +1254,7 @@ export type ViewManifest = {
 export const views = [timeline, calendar, charts, list].sort((a, b) => a.order - b.order);
 ```
 
-- [ ] **Step 3: 创建四个占位 page.tsx**
+- [x] **Step 3: 创建四个占位 page.tsx**
 
 四个文件内容相同（各自放在自己视图目录下），以 timeline 为例，`app/(dashboard)/views/timeline/page.tsx`：
 
@@ -1269,7 +1269,7 @@ export default function TimelinePage() {
 
 calendar/charts/list 同样处理，占位文案分别为 `月历开发中`、`图表开发中`、`明细开发中`。
 
-- [ ] **Step 4: 删除脚手架首页，创建 dashboard 布局与占位首页**
+- [x] **Step 4: 删除脚手架首页，创建 dashboard 布局与占位首页**
 
 ```bash
 rm app/page.tsx
@@ -1309,7 +1309,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 }
 ```
 
-- [ ] **Step 5: 创建 `components/sidebar-nav.tsx`（client，携带共享筛选参数）**
+- [x] **Step 5: 创建 `components/sidebar-nav.tsx`（client，携带共享筛选参数）**
 
 ```tsx
 "use client";
@@ -1349,7 +1349,7 @@ export function SidebarNav() {
 }
 ```
 
-- [ ] **Step 6: 修改 `app/layout.tsx` 的 metadata**
+- [x] **Step 6: 修改 `app/layout.tsx` 的 metadata**
 
 把脚手架自带的 metadata 对象改为（其余内容不动）：
 
@@ -1360,7 +1360,7 @@ export const metadata: Metadata = {
 };
 ```
 
-- [ ] **Step 7: 验证**
+- [x] **Step 7: 验证**
 
 ```bash
 npm run build
@@ -1368,7 +1368,7 @@ npm run build
 
 预期：构建成功；无 `app/page.tsx` 与 `(dashboard)/page.tsx` 的路由冲突。dev 起服务后：`/`、`/views/timeline` 等都可访问（已登录态），侧边栏五项齐全。
 
-- [ ] **Step 8: 提交**
+- [x] **Step 8: 提交**
 
 ```bash
 git add -A
@@ -1384,7 +1384,7 @@ git commit -m "骨架：视图 registry 插件体系、dashboard 布局与侧边
 
 设计要点：mode 决定时间导航控件（date/month/range）；共享的 category 下拉 + 关键词输入所有模式都有；任何变更重置 `page`；**所有默认值经 `defaults` prop 由服务端页面传入**（客户端不读环境变量）。
 
-- [ ] **Step 1: 创建 `components/filter-bar.tsx`**
+- [x] **Step 1: 创建 `components/filter-bar.tsx`**
 
 ```tsx
 "use client";
@@ -1514,7 +1514,7 @@ export function FilterBar({ categories, mode, defaults }: Props) {
 }
 ```
 
-- [ ] **Step 2: 类型检查与构建**
+- [x] **Step 2: 类型检查与构建**
 
 ```bash
 npx tsc --noEmit && npm run build
@@ -1522,7 +1522,7 @@ npx tsc --noEmit && npm run build
 
 预期：无错误。
 
-- [ ] **Step 3: 提交**
+- [x] **Step 3: 提交**
 
 ```bash
 git add components/filter-bar.tsx
@@ -1537,7 +1537,7 @@ git commit -m "组件：共享筛选栏（日期/月份/区间三种模式 + 分
 - Modify: `app/(dashboard)/views/timeline/page.tsx`（替换占位）
 - Create: `app/(dashboard)/views/timeline/timeline-view.tsx`
 
-- [ ] **Step 1: 实现 `app/(dashboard)/views/timeline/page.tsx`**
+- [x] **Step 1: 实现 `app/(dashboard)/views/timeline/page.tsx`**
 
 ```tsx
 import { FilterBar } from "@/components/filter-bar";
@@ -1572,7 +1572,7 @@ export default async function TimelinePage({
 }
 ```
 
-- [ ] **Step 2: 实现 `app/(dashboard)/views/timeline/timeline-view.tsx`（client）**
+- [x] **Step 2: 实现 `app/(dashboard)/views/timeline/timeline-view.tsx`（client）**
 
 ```tsx
 "use client";
@@ -1656,7 +1656,7 @@ npm run dev
 
 已登录访问 `/views/timeline`：能看到种子数据当天的彩色活动块，位置和时长与小时刻度对得上；前一天/后一天、日期输入、分类下拉、关键词都能改变渲染；合计与分类小结正确。
 
-- [ ] **Step 4: 提交**
+- [x] **Step 4: 提交**
 
 ```bash
 git add "app/(dashboard)/views/timeline"
@@ -1671,7 +1671,7 @@ git commit -m "视图：日视图时间轴（24 小时活动块 + 分类小结�
 - Modify: `app/(dashboard)/views/list/page.tsx`（替换占位）
 - Create: `app/(dashboard)/views/list/table-view.tsx`
 
-- [ ] **Step 1: 实现 `app/(dashboard)/views/list/page.tsx`**
+- [x] **Step 1: 实现 `app/(dashboard)/views/list/page.tsx`**
 
 ```tsx
 import Link from "next/link";
@@ -1747,7 +1747,7 @@ export default async function ListPage({
 }
 ```
 
-- [ ] **Step 2: 实现 `app/(dashboard)/views/list/table-view.tsx`（server 组件，直接格式化）**
+- [x] **Step 2: 实现 `app/(dashboard)/views/list/table-view.tsx`（server 组件，直接格式化）**
 
 ```tsx
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -1808,7 +1808,7 @@ export function TableView({ rows }: { rows: EntryDTO[] }) {
 
 已登录访问 `/views/list`：默认显示最近 7 天明细（倒序）；改日期区间/分类/关键词后条数与内容变化；`?page=999` 显示空表但页码正常（回退逻辑在服务端，不 500）；`?from=abc` 不报错（回退默认区间）。
 
-- [ ] **Step 4: 提交**
+- [x] **Step 4: 提交**
 
 ```bash
 git add "app/(dashboard)/views/list"
@@ -1823,7 +1823,7 @@ git commit -m "视图：明细列表（表格 + 筛选 + 分页）"
 - Modify: `app/(dashboard)/views/calendar/page.tsx`（替换占位）
 - Create: `app/(dashboard)/views/calendar/calendar-view.tsx`
 
-- [ ] **Step 1: 实现 `app/(dashboard)/views/calendar/page.tsx`**
+- [x] **Step 1: 实现 `app/(dashboard)/views/calendar/page.tsx`**
 
 ```tsx
 import { FilterBar } from "@/components/filter-bar";
@@ -1862,7 +1862,7 @@ export default async function CalendarPage({
 }
 ```
 
-- [ ] **Step 2: 实现 `app/(dashboard)/views/calendar/calendar-view.tsx`（client）**
+- [x] **Step 2: 实现 `app/(dashboard)/views/calendar/calendar-view.tsx`（client）**
 
 ```tsx
 "use client";
@@ -1947,7 +1947,7 @@ export function CalendarHeatmap({ month, totals }: { month: string; totals: Dail
 
 已登录访问 `/views/calendar`：当月网格对齐（第一天落在正确的星期列）；有数据的日子显示总时长、底色深浅随时长变化、下方迷你堆叠条按分类着色；上/下月切换正常；点击某天跳到 `/views/timeline?date=…` 且共享筛选保留；`?month=2026-13` 不 500（回退当月）。
 
-- [ ] **Step 4: 提交**
+- [x] **Step 4: 提交**
 
 ```bash
 git add "app/(dashboard)/views/calendar"
@@ -1962,7 +1962,7 @@ git commit -m "视图：月历热力图（日总时长深浅 + 分类堆叠条�
 - Modify: `app/(dashboard)/views/charts/page.tsx`（替换占位）
 - Create: `app/(dashboard)/views/charts/charts-view.tsx`
 
-- [ ] **Step 1: 实现 `app/(dashboard)/views/charts/page.tsx`**
+- [x] **Step 1: 实现 `app/(dashboard)/views/charts/page.tsx`**
 
 ```tsx
 import { FilterBar } from "@/components/filter-bar";
@@ -2004,7 +2004,7 @@ export default async function ChartsPage({
 
 （`categoryTotals` 是环形图数据，`categoryOptions` 是筛选下拉选项，勿混用。）
 
-- [ ] **Step 2: 实现 `app/(dashboard)/views/charts/charts-view.tsx`（client，Recharts）**
+- [x] **Step 2: 实现 `app/(dashboard)/views/charts/charts-view.tsx`（client，Recharts）**
 
 ```tsx
 "use client";
@@ -2092,7 +2092,7 @@ export function ChartsView({
 
 已登录访问 `/views/charts`：三张图渲染且共用筛选区间；柱状趋势图 X 轴为 `MM-DD`；环形图各扇区颜色与其他视图同分类同色；Top10 横向条形图颜色取该活动所属分类色；改筛选后图表联动；无数据的筛选组合显示空图不报错。
 
-- [ ] **Step 4: 提交**
+- [x] **Step 4: 提交**
 
 ```bash
 git add "app/(dashboard)/views/charts"
@@ -2106,7 +2106,7 @@ git commit -m "视图：统计图表（按日趋势/分类占比/活动 Top10）
 **Files:**
 - Modify: `app/(dashboard)/page.tsx`（替换占位）
 
-- [ ] **Step 1: 实现 `app/(dashboard)/page.tsx`**
+- [x] **Step 1: 实现 `app/(dashboard)/page.tsx`**
 
 ```tsx
 import Link from "next/link";
@@ -2201,7 +2201,7 @@ export default async function HomePage() {
 
 `/`：四块 stat tiles 数值与各自视图口径一致（今日 = 时间轴当天合计；本月 = 月历当月各天之和）；"本周分类"合计 = 本周 tile；四张视图入口卡片可点击跳转。
 
-- [ ] **Step 3: 提交**
+- [x] **Step 3: 提交**
 
 ```bash
 git add "app/(dashboard)/page.tsx"
@@ -2215,7 +2215,7 @@ git commit -m "首页：今日/本周/本月总时长与视图入口总览"
 **Files:**
 - Create: `app/(dashboard)/error.tsx`
 
-- [ ] **Step 1: 创建 `app/(dashboard)/error.tsx`**
+- [x] **Step 1: 创建 `app/(dashboard)/error.tsx`**
 
 ```tsx
 "use client";
@@ -2249,7 +2249,7 @@ export default function DashboardError({
 }
 ```
 
-- [ ] **Step 2: force-dynamic 审计**
+- [x] **Step 2: force-dynamic 审计**
 
 ```bash
 grep -rL "force-dynamic" "app/(dashboard)" --include="page.tsx"
@@ -2279,7 +2279,7 @@ dev 起服务，已登录逐页走查：
 6. 侧边栏切换视图时 category/q 保留、date/month/from 不跨视图
 7. DevTools → Network → 任一视图文档请求的 RSC payload：只有 DTO 字段（id/startedAt/endedAt/durationMinutes/category/activity/note），无 source、createdAt 等多余字段
 
-- [ ] **Step 4: 提交**
+- [x] **Step 4: 提交**
 
 ```bash
 git add "app/(dashboard)/error.tsx"
@@ -2361,3 +2361,28 @@ git status   # 确认无遗漏未提交文件
 
 
 
+
+---
+
+## 执行阻塞项与对计划的偏离（Task 1–17 执行完成后记录）
+
+### A. 等待用户提供凭据/外部服务（代码已完成，无法验证）
+
+| 计划步骤 | 阻塞原因 |
+|---|---|
+| Task 2 Step 3/4/5 | `.env.local` 的 `AUTH_GITHUB_ID`、`AUTH_GITHUB_SECRET`、`DATABASE_URL`、`OWNER_GITHUB_ID` 仍为空（需创建 GitHub OAuth App、Neon 项目、查 owner 数字 id） |
+| Task 3 Step 4 | `npx drizzle-kit migrate` 未执行（无 `DATABASE_URL`）；`generate` 已产出 `drizzle/0000_bored_toro.sql` |
+| Task 4 Step 2 | `npx tsx scripts/seed.ts` 未执行（无数据库） |
+| Task 8 Step 5、Task 12–17 各"本地验证"步骤 | 浏览器登录/数据走查需会话与种子数据，均未执行 |
+| Task 18 全部步骤 | 推送远端、建生产 OAuth App、Vercel 部署、curl 上线验证均需用户操作（未执行 `git push`） |
+
+### B. 对计划代码的三处必要偏离（版本不兼容，已按实际依赖修正）
+
+1. **`lib/schema.ts`**：drizzle-orm 0.45.2 的 `bigint(name)` 必须带 `{ mode: "number" | "bigint" }`，否则 `drizzle-kit generate` 报 `Cannot read properties of undefined (reading 'mode')`。已改为 `bigint("id", { mode: "number" })`。
+2. **`components/filter-bar.tsx`**：shadcn v4（base-ui）的 `Select` 回调 `onValueChange` 值类型为 `string | null`，计划中的 `v === "all"` 写法类型报错。已改为 `v && v !== "all"`。
+3. **`app/(dashboard)/error.tsx`**：shadcn v4 的 `Button` 无 `asChild` 属性。已改用 base-ui 的 `render={<Link href="/login" />}`。
+
+### C. 其它说明
+
+- 新增依赖 `server-only`（Task 9 的 `import "server-only"` 需要，脚手架未自带）。
+- `lib/db.ts` 在模块加载时即执行 `neon(process.env.DATABASE_URL!)`：若 `DATABASE_URL` 为空，`next build` 会在 "collect page data" 阶段失败。填入真实连接串后即消失；本次验证构建时临时用占位连接串代替，未改动任何文件。
