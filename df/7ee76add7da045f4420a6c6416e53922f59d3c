@@ -1,0 +1,14 @@
+docs/doc.md
+  h_d9088715075e51 1-203
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "df7ee76add7da045f4420a6c6416e53922f59d3c",
+  "prompts": {},
+  "humans": {
+    "h_d9088715075e51": {
+      "author": "leijieliu <leijieliu@tencent.com>"
+    }
+  }
+}
