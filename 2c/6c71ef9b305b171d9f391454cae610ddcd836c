@@ -1,0 +1,27 @@
+docs/superpowers/plans/2026-09-01-time-viewer.md
+  s_0a2ad41fd1935a::t_5fc29bfd2bc3e9 1185-1804,1806-1817,2362
+  s_0a2ad41fd1935a::t_47dae2d244c7b2 197-201
+  s_0a2ad41fd1935a::t_0c8e77be7251db 1818-2001,2003-2004,2006-2358,2360-2361
+  s_0a2ad41fd1935a::t_f2ff6b88db57c1 2002,2005
+  s_0a2ad41fd1935a::t_900f0627d5a37d 2359
+  s_0a2ad41fd1935a::t_f79b4f0607c512 209
+  s_0a2ad41fd1935a::t_5792756f5b0e05 1-196,202-208,210-383
+  s_0a2ad41fd1935a::t_0c569e515af6b2 384-1184,2363
+  s_0a2ad41fd1935a::t_b5666269cb6e42 1805
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "2c6c71ef9b305b171d9f391454cae610ddcd836c",
+  "prompts": {},
+  "sessions": {
+    "s_0a2ad41fd1935a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2bc35f8c-8251-4d93-b63b-aaccb020eb74",
+        "model": "ep-glm53ioa"
+      },
+      "human_author": "leijieliu <leijieliu@tencent.com>"
+    }
+  }
+}
