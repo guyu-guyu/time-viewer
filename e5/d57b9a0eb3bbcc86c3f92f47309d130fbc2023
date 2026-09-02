@@ -1,0 +1,55 @@
+app/(dashboard)/page.tsx
+  s_bdbca5fbe64d5f::t_5c2d96ef336e9a 4-5,21-23,30,37-39,60,62,65-66,69,71
+app/(dashboard)/views/calendar/calendar-view.tsx
+  s_bdbca5fbe64d5f::t_f5adb5c47dfff5 6,23,57,64
+app/(dashboard)/views/calendar/page.tsx
+  s_bdbca5fbe64d5f::t_ccdd00a145fe4b 2,22,24,30
+app/(dashboard)/views/charts/charts-view.tsx
+  s_bdbca5fbe64d5f::t_7b07bf2b1f04d1 17,19,23-24,27-28,30-42,53-54,62,66-74,77,85,90-93,95,97-101
+app/(dashboard)/views/charts/page.tsx
+  s_bdbca5fbe64d5f::t_3d858abeb1f436 4-6,26,28-30,38-39
+app/(dashboard)/views/list/page.tsx
+  s_bdbca5fbe64d5f::t_b5c399cd93d481 5,27,30,44
+app/(dashboard)/views/list/table-view.tsx
+  s_bdbca5fbe64d5f::t_7062d743d75c6c 9-21,33-36,38,44,49-76
+app/(dashboard)/views/timeline/page.tsx
+  s_bdbca5fbe64d5f::t_839100ca7c069f 2,21,26
+components/sidebar-nav.tsx
+  s_bdbca5fbe64d5f::t_48816cd0f0368a 12,14
+docs/doc.md
+  s_bdbca5fbe64d5f::t_cae5263199ac7c 122,124-129,133-145
+lib/colors.test.ts
+  s_bdbca5fbe64d5f::t_694b461aa8f7d0 2,4-6,8-11
+lib/colors.ts
+  s_bdbca5fbe64d5f::t_f9eb1639c46268 12-18
+lib/dal.ts
+  s_bdbca5fbe64d5f::t_c2b9eb62a221d5 4,10-19,30-37,39-45,47,57-61,65,67-74,77,79,81-82,96-97,110,112-113,116,124-125,129,139-140,144-156,158,161,164,168,170-171,175,178,182-186,188-189,193-194,197,199-204
+lib/filters.test.ts
+  s_bdbca5fbe64d5f::t_39299c55f8727f 6-7,9,11-14,24,36,44,49,62
+lib/filters.ts
+  s_bdbca5fbe64d5f::t_8f1bf2dfd3671a 6,8,10,35
+lib/schema.ts
+  s_bdbca5fbe64d5f::t_4a68bf045fd31e 1-2,4-26
+lib/time.ts
+  s_bdbca5fbe64d5f::t_2fc74326d407f2 116-119
+lib/types.ts
+  s_bdbca5fbe64d5f::t_577f0924d95688 1-12,16,18-25,31,34,36-40
+scripts/seed.ts
+  s_bdbca5fbe64d5f::t_aed89f286634c6 7,9-13,29,31,33,35-45,47-54,57
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "e5d57b9a0eb3bbcc86c3f92f47309d130fbc2023",
+  "prompts": {},
+  "sessions": {
+    "s_bdbca5fbe64d5f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a05fb5-4384-7da0-b59f-41aa174bddbe",
+        "model": "unknown"
+      },
+      "human_author": "leijieliu <leijieliu@tencent.com>"
+    }
+  }
+}
