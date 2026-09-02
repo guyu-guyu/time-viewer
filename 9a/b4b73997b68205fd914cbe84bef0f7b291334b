@@ -1,0 +1,21 @@
+package.json
+  s_bdbca5fbe64d5f::t_6ed0e4a2c8614d 10-11
+scripts/clear-seed.ts
+  s_bdbca5fbe64d5f::t_92f93fade9729d 1-24
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "9ab4b73997b68205fd914cbe84bef0f7b291334b",
+  "prompts": {},
+  "sessions": {
+    "s_bdbca5fbe64d5f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a05fb5-4384-7da0-b59f-41aa174bddbe",
+        "model": "unknown"
+      },
+      "human_author": "leijieliu <leijieliu@tencent.com>"
+    }
+  }
+}
