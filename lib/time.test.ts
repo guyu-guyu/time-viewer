@@ -10,6 +10,7 @@ import {
   isValidDateStr,
   isValidMonthStr,
   lastNDays,
+  millisecondsToMinutes,
   monthRange,
   weekRange,
 } from "./time";
@@ -85,5 +86,10 @@ describe("formatDuration / formatTimeInTz", () => {
   });
   it("按指定时区格式化时刻", () => {
     expect(formatTimeInTz(new Date("2026-09-01T02:30:00Z"), "Asia/Shanghai")).toBe("10:30");
+  });
+  it("毫秒时长按分钟四舍五入且不返回负数", () => {
+    expect(millisecondsToMinutes(90_000)).toBe(2);
+    expect(millisecondsToMinutes(60_000)).toBe(1);
+    expect(millisecondsToMinutes(-1)).toBe(0);
   });
 });

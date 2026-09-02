@@ -14,22 +14,32 @@ import {
   YAxis,
 } from "recharts";
 
-import { categoryColor } from "@/lib/colors";
+import { projectColor } from "@/lib/colors";
 import { formatDuration } from "@/lib/time";
-import type { ActivityTotal, CategoryTotal, DailyTotal } from "@/lib/types";
+import type { DailyTotal, ProjectTotal, TaskTotal } from "@/lib/types";
 
 export function ChartsView({
   daily,
-  categoryTotals,
-  activities,
+  projectTotals,
+  tasks,
 }: {
   daily: DailyTotal[];
-  categoryTotals: CategoryTotal[];
-  activities: ActivityTotal[];
+  projectTotals: ProjectTotal[];
+  tasks: TaskTotal[];
 }) {
-  const dailyData = daily.map((d) => ({ date: d.date.slice(5), minutes: d.totalMinutes }));
-  const pieData = categoryTotals.map((c) => ({ name: c.category, value: c.minutes }));
-  const topData = activities.map((a) => ({ name: a.activity, minutes: a.minutes }));
+  const dailyData = daily.map((item) => ({
+    date: item.date.slice(5),
+    minutes: item.totalMinutes,
+  }));
+  const pieData = projectTotals.map((project) => ({
+    name: project.projectName,
+    value: project.minutes,
+  }));
+  const topData = tasks.map((task) => ({
+    name: task.taskTitle,
+    projectName: task.projectName,
+    minutes: task.minutes,
+  }));
 
   return (
     <div className="flex flex-col gap-10">
@@ -40,8 +50,8 @@ export function ChartsView({
             <BarChart data={dailyData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />
-              <YAxis tickFormatter={(v: number) => `${Math.round(v / 60)}h`} />
-              <Tooltip formatter={(v) => [formatDuration(Number(v)), "时长"]} />
+              <YAxis tickFormatter={(value: number) => `${Math.round(value / 60)}h`} />
+              <Tooltip formatter={(value) => [formatDuration(Number(value)), "时长"]} />
               <Bar dataKey="minutes" fill="#2563eb" radius={[3, 3, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
@@ -49,16 +59,22 @@ export function ChartsView({
       </section>
 
       <section>
-        <h2 className="mb-3 text-sm font-medium text-muted-foreground">分类占比</h2>
+        <h2 className="mb-3 text-sm font-medium text-muted-foreground">项目占比</h2>
         <div className="h-72">
           <ResponsiveContainer>
             <PieChart>
-              <Pie data={pieData} dataKey="value" nameKey="name" innerRadius="55%" outerRadius="80%">
-                {pieData.map((d) => (
-                  <Cell key={d.name} fill={categoryColor(d.name)} />
+              <Pie
+                data={pieData}
+                dataKey="value"
+                nameKey="name"
+                innerRadius="55%"
+                outerRadius="80%"
+              >
+                {pieData.map((project) => (
+                  <Cell key={project.name} fill={projectColor(project.name)} />
                 ))}
               </Pie>
-              <Tooltip formatter={(v) => formatDuration(Number(v))} />
+              <Tooltip formatter={(value) => formatDuration(Number(value))} />
               <Legend />
             </PieChart>
           </ResponsiveContainer>
@@ -66,17 +82,23 @@ export function ChartsView({
       </section>
 
       <section>
-        <h2 className="mb-3 text-sm font-medium text-muted-foreground">活动时长 Top 10</h2>
+        <h2 className="mb-3 text-sm font-medium text-muted-foreground">任务时长 Top 10</h2>
         <div className="h-80">
           <ResponsiveContainer>
             <BarChart data={topData} layout="vertical" margin={{ left: 30 }}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis type="number" tickFormatter={(v: number) => `${Math.round(v / 60)}h`} />
+              <XAxis
+                type="number"
+                tickFormatter={(value: number) => `${Math.round(value / 60)}h`}
+              />
               <YAxis type="category" dataKey="name" width={110} />
-              <Tooltip formatter={(v) => [formatDuration(Number(v)), "时长"]} />
+              <Tooltip formatter={(value) => [formatDuration(Number(value)), "时长"]} />
               <Bar dataKey="minutes" radius={[0, 3, 3, 0]}>
-                {topData.map((d, i) => (
-                  <Cell key={i} fill={categoryColor(activities[i]?.category ?? "")} />
+                {topData.map((task) => (
+                  <Cell
+                    key={`${task.projectName}:${task.name}`}
+                    fill={projectColor(task.projectName)}
+                  />
                 ))}
               </Bar>
             </BarChart>

@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getCategoryBreakdown, getDailyTotals } from "@/lib/dal";
-import { categoryColor } from "@/lib/colors";
+import { projectColor } from "@/lib/colors";
+import { getDailyTotals, getProjectBreakdown } from "@/lib/dal";
 import { currentMonthStr, formatDuration, monthRange, todayStr, weekRange } from "@/lib/time";
 import { views } from "@/lib/views/registry";
 import type { DailyTotal } from "@/lib/types";
@@ -18,25 +18,25 @@ export default async function HomePage() {
   const month = monthRange(currentMonthStr());
 
   // 一次月度汇总覆盖今日/本周/本月三个口径
-  const [daily, weekCategories] = await Promise.all([
-    getDailyTotals(month, { category: null, q: null }),
-    getCategoryBreakdown(week, { category: null, q: null }),
+  const [daily, weekProjects] = await Promise.all([
+    getDailyTotals(month, { projectName: null, q: null }),
+    getProjectBreakdown(week, { projectName: null, q: null }),
   ]);
 
   const sum = (list: DailyTotal[]) => list.reduce((s, d) => s + d.totalMinutes, 0);
   const todayTotal = daily.find((d) => d.date === today)?.totalMinutes ?? 0;
   const weekTotal = sum(daily.filter((d) => d.date >= week.from && d.date <= week.to));
   const monthTotal = sum(daily);
-  const topCategory = weekCategories[0];
+  const topProject = weekProjects[0];
 
   const tiles = [
     { label: "今日", value: formatDuration(todayTotal) },
     { label: "本周", value: formatDuration(weekTotal) },
     { label: "本月", value: formatDuration(monthTotal) },
     {
-      label: "本周主力",
-      value: topCategory
-        ? `${topCategory.category} · ${formatDuration(topCategory.minutes)}`
+      label: "本周主力项目",
+      value: topProject
+        ? `${topProject.projectName} · ${formatDuration(topProject.minutes)}`
         : "暂无数据",
     },
   ];
@@ -57,18 +57,18 @@ export default async function HomePage() {
         ))}
       </div>
       <div>
-        <h2 className="mb-3 text-sm font-medium text-muted-foreground">本周分类</h2>
+        <h2 className="mb-3 text-sm font-medium text-muted-foreground">本周项目</h2>
         <div className="flex flex-wrap gap-2">
-          {weekCategories.length === 0 && (
+          {weekProjects.length === 0 && (
             <span className="text-sm text-muted-foreground">暂无数据</span>
           )}
-          {weekCategories.map((c) => (
-            <span key={c.category} className="flex items-center gap-1.5 text-sm">
+          {weekProjects.map((project) => (
+            <span key={project.projectName} className="flex items-center gap-1.5 text-sm">
               <span
                 className="inline-block size-2 rounded-full"
-                style={{ background: categoryColor(c.category) }}
+                style={{ background: projectColor(project.projectName) }}
               />
-              {c.category} {formatDuration(c.minutes)}
+              {project.projectName} {formatDuration(project.minutes)}
             </span>
           ))}
         </div>

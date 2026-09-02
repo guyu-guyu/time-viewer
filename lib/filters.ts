@@ -3,11 +3,11 @@ import type { CommonFilter } from "./types";
 
 export type SP = Record<string, string | undefined>;
 
-/** 共享筛选：category 精确匹配、q 模糊匹配 note/activity；空白视为未选 */
+/** 共享筛选：project 精确匹配，q 模糊匹配任务、项目和备注；空白视为未选 */
 export function parseCommon(sp: SP): CommonFilter {
-  const category = (sp.category ?? "").trim();
+  const projectName = (sp.project ?? "").trim();
   const q = (sp.q ?? "").trim();
-  return { category: category || null, q: q || null };
+  return { projectName: projectName || null, q: q || null };
 }
 
 /** timeline 主参数：单日 YYYY-MM-DD，非法回退 fallback */
@@ -32,7 +32,7 @@ export function parseRange(
   return from <= to ? { from, to } : { from: to, to: from };
 }
 
-/** list 分页：1 起始页码 → offset */
+/** list 分页：1 起始页码 -> offset */
 export function parsePage(sp: SP, pageSize: number): { page: number; offset: number } {
   const n = Number(sp.page);
   const page = Number.isInteger(n) && n >= 1 ? n : 1;

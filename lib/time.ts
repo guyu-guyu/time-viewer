@@ -113,6 +113,10 @@ export function formatDuration(minutes: number): string {
   return `${h}h ${r}m`;
 }
 
+export function millisecondsToMinutes(milliseconds: number): number {
+  return Math.max(0, Math.round(milliseconds / 60_000));
+}
+
 export function formatTimeInTz(date: Date, tz = getDisplayTz()): string {
   return new Intl.DateTimeFormat("zh-CN", {
     timeZone: tz,

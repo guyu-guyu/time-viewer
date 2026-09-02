@@ -1,17 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { PALETTE, categoryColor } from "./colors";
+import { PALETTE, projectColor } from "./colors";
 
-describe("categoryColor", () => {
-  it("同一分类返回稳定颜色", () => {
-    expect(categoryColor("工作")).toBe(categoryColor("工作"));
+describe("projectColor", () => {
+  it("同一项目始终返回相同颜色", () => {
+    expect(projectColor("time-viewer")).toBe(projectColor("time-viewer"));
   });
-  it("显式映射优先", () => {
-    expect(categoryColor("工作")).toBe("#2563eb");
-    expect(categoryColor("学习")).toBe("#7c3aed");
-  });
-  it("未知分类兜底到调色板内", () => {
-    for (const c of ["完全未知的分类", "a", "运动2", "_xyz"]) {
-      expect(PALETTE).toContain(categoryColor(c));
+
+  it("返回调色板中的颜色", () => {
+    for (const projectName of ["time-viewer", "内部工具", "未关联项目"]) {
+      expect(PALETTE).toContain(projectColor(projectName));
     }
   });
 });

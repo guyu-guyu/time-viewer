@@ -1,5 +1,5 @@
 import { FilterBar } from "@/components/filter-bar";
-import { getCategories, getDayEntries } from "@/lib/dal";
+import { getDayEntries, getProjects } from "@/lib/dal";
 import { parseCommon, parseDateParam } from "@/lib/filters";
 import { getDisplayTz, todayStr } from "@/lib/time";
 
@@ -18,12 +18,12 @@ export default async function TimelinePage({
   const sp = await searchParams;
   const date = parseDateParam(sp, todayStr());
   const filter = parseCommon(sp);
-  const [rows, categories] = await Promise.all([getDayEntries(date, filter), getCategories()]);
+  const [rows, projects] = await Promise.all([getDayEntries(date, filter), getProjects()]);
 
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-xl font-semibold">时间轴 · {date}</h1>
-      <FilterBar mode="date" categories={categories} defaults={{ date }} />
+      <FilterBar mode="date" projects={projects} defaults={{ date }} />
       <TimelineView date={date} entries={rows} tz={getDisplayTz()} />
     </div>
   );

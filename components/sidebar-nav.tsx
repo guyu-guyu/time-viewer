@@ -9,9 +9,9 @@ export function SidebarNav() {
   const pathname = usePathname();
   const sp = useSearchParams();
 
-  // 只携带共享参数（category/q），视图主参数不跨视图
+  // 只携带共享参数（project/q），视图主参数不跨视图
   const shared = new URLSearchParams();
-  if (sp.get("category")) shared.set("category", sp.get("category")!);
+  if (sp.get("project")) shared.set("project", sp.get("project")!);
   if (sp.get("q")) shared.set("q", sp.get("q")!);
   const qs = shared.toString();
 

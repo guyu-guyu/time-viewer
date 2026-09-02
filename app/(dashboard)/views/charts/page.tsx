@@ -1,9 +1,9 @@
 import { FilterBar } from "@/components/filter-bar";
 import {
-  getActivityBreakdown,
-  getCategories,
-  getCategoryBreakdown,
   getDailyTotals,
+  getProjectBreakdown,
+  getProjects,
+  getTaskBreakdown,
 } from "@/lib/dal";
 import { parseCommon, parseRange } from "@/lib/filters";
 import { lastNDays } from "@/lib/time";
@@ -23,11 +23,11 @@ export default async function ChartsPage({
   const sp = await searchParams;
   const range = parseRange(sp, lastNDays(30));
   const filter = parseCommon(sp);
-  const [daily, categoryTotals, activities, categoryOptions] = await Promise.all([
+  const [daily, projectTotals, tasks, projects] = await Promise.all([
     getDailyTotals(range, filter),
-    getCategoryBreakdown(range, filter),
-    getActivityBreakdown(range, filter),
-    getCategories(),
+    getProjectBreakdown(range, filter),
+    getTaskBreakdown(range, filter),
+    getProjects(),
   ]);
 
   return (
@@ -35,8 +35,8 @@ export default async function ChartsPage({
       <h1 className="text-xl font-semibold">
         图表 · {range.from} ~ {range.to}
       </h1>
-      <FilterBar mode="range" categories={categoryOptions} defaults={range} />
-      <ChartsView daily={daily} categoryTotals={categoryTotals} activities={activities} />
+      <FilterBar mode="range" projects={projects} defaults={range} />
+      <ChartsView daily={daily} projectTotals={projectTotals} tasks={tasks} />
     </div>
   );
 }

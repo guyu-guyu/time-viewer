@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { FilterBar } from "@/components/filter-bar";
 import { buttonVariants } from "@/components/ui/button";
-import { countEntries, getCategories, listEntries } from "@/lib/dal";
+import { countEntries, getProjects, listEntries } from "@/lib/dal";
 import { parseCommon, parsePage, parseRange } from "@/lib/filters";
 import { lastNDays } from "@/lib/time";
 
@@ -24,10 +24,10 @@ export default async function ListPage({
   const range = parseRange(sp, lastNDays(7));
   const filter = parseCommon(sp);
   const { page, offset } = parsePage(sp, PAGE_SIZE);
-  const [rows, total, categories] = await Promise.all([
+  const [rows, total, projects] = await Promise.all([
     listEntries(range, filter, { limit: PAGE_SIZE, offset }),
     countEntries(range, filter),
-    getCategories(),
+    getProjects(),
   ]);
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
@@ -41,7 +41,7 @@ export default async function ListPage({
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-xl font-semibold">明细</h1>
-      <FilterBar mode="range" categories={categories} defaults={range} />
+      <FilterBar mode="range" projects={projects} defaults={range} />
       <p className="text-sm text-muted-foreground">
         {range.from} ~ {range.to} · 共 {total} 条 · 第 {page}/{totalPages} 页
       </p>

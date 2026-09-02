@@ -13,14 +13,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { addDay, addMonth } from "@/lib/time";
+import { UNASSIGNED_PROJECT, UNASSIGNED_PROJECT_FILTER } from "@/lib/types";
 
 type Props = {
-  categories: string[];
+  projects: string[];
   mode: "date" | "month" | "range";
   defaults: { date?: string; month?: string; from?: string; to?: string };
 };
 
-export function FilterBar({ categories, mode, defaults }: Props) {
+export function FilterBar({ projects, mode, defaults }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const sp = useSearchParams();
@@ -107,19 +108,19 @@ export function FilterBar({ categories, mode, defaults }: Props) {
       )}
 
       <Select
-        value={sp.get("category") ?? "all"}
+        value={sp.get("project") ?? "all"}
         onValueChange={(v) =>
-          update((p) => (v && v !== "all" ? p.set("category", v) : p.delete("category")))
+          update((p) => (v && v !== "all" ? p.set("project", v) : p.delete("project")))
         }
       >
         <SelectTrigger className="w-32">
-          <SelectValue placeholder="全部分类" />
+          <SelectValue placeholder="全部项目" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">全部分类</SelectItem>
-          {categories.map((c) => (
-            <SelectItem key={c} value={c}>
-              {c}
+          <SelectItem value="all">全部项目</SelectItem>
+          {projects.map((project) => (
+            <SelectItem key={project} value={project}>
+              {project === UNASSIGNED_PROJECT_FILTER ? UNASSIGNED_PROJECT : project}
             </SelectItem>
           ))}
         </SelectContent>
@@ -134,7 +135,7 @@ export function FilterBar({ categories, mode, defaults }: Props) {
       >
         <Input
           className="w-44"
-          placeholder="关键词：活动/备注"
+          placeholder="关键词：任务/项目/备注"
           value={q}
           onChange={(e) => setQ(e.target.value)}
         />

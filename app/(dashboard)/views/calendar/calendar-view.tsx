@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-import { categoryColor } from "@/lib/colors";
+import { projectColor } from "@/lib/colors";
 import { formatDuration } from "@/lib/time";
 import type { DailyTotal } from "@/lib/types";
 
@@ -20,7 +20,7 @@ export function CalendarHeatmap({ month, totals }: { month: string; totals: Dail
   function dayHref(date: string) {
     // 点击某天 → 时间轴，携带共享筛选
     const p = new URLSearchParams();
-    if (sp.get("category")) p.set("category", sp.get("category")!);
+    if (sp.get("project")) p.set("project", sp.get("project")!);
     if (sp.get("q")) p.set("q", sp.get("q")!);
     p.set("date", date);
     return `/views/timeline?${p.toString()}`;
@@ -54,14 +54,14 @@ export function CalendarHeatmap({ month, totals }: { month: string; totals: Dail
               <>
                 <span className="text-xs font-medium">{formatDuration(t.totalMinutes)}</span>
                 <span className="flex h-1.5 overflow-hidden rounded-full">
-                  {Object.entries(t.byCategory)
+                  {Object.entries(t.byProject)
                     .sort((a, b) => b[1] - a[1])
                     .map(([c, mins]) => (
                       <span
                         key={c}
                         style={{
                           width: `${(mins / t.totalMinutes) * 100}%`,
-                          background: categoryColor(c),
+                          background: projectColor(c),
                         }}
                       />
                     ))}

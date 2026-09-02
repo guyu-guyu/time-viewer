@@ -119,16 +119,30 @@ export const requireOwner = cache(async () => {
 | 字段 | 类型/约束 | 含义 |
 | --- | --- | --- |
 | `id` | bigint identity, primary key | 记录 ID |
-| `started_at` | timestamptz, not null | 开始时间 |
-| `ended_at` | timestamptz, not null | 结束时间 |
-| `category` | text, not null | 分类 |
-| `activity` | text, not null | 活动 |
+| `type` | integer, not null, 仅 0/1 | 0 = 番茄，1 = 正计时 |
 | `note` | text, nullable | 备注 |
+| `task_title` | text, nullable | 关联任务名 |
+| `project_name` | text, nullable | 关联项目名 |
+| `start_time` | timestamptz, not null | 开始时间 |
+| `end_time` | timestamptz, not null | 结束时间 |
+| `duration` | integer, not null, >= 0 | 持续时间，单位毫秒 |
+| `pause_duration` | integer, not null, >= 0 | 暂停时间，单位毫秒 |
 | `source` | text, default `default` | 数据来源 |
 | `created_at` | timestamptz, default now | 创建时间 |
 
-`started_at` 和 `category` 有索引。数据以带时区时间戳保存，日期归属、
-日历分桶和页面展示按 `DISPLAY_TZ` 计算。
+`start_time` 和 `project_name` 有索引。数据以带时区时间戳保存，日期归属、
+日历分桶和页面展示按 `DISPLAY_TZ` 计算。统计使用数据库中的 `duration`，
+时间轴位置使用 `start_time` 和 `end_time`。
+
+`0001_reshape_entries` migration 会保留旧数据并完成以下映射：
+
+- `started_at` -> `start_time`
+- `ended_at` -> `end_time`
+- `category` -> `project_name`
+- `activity` -> `task_title`
+- 旧记录的 `type` 设为 1（正计时）
+- 旧记录的 `duration` 由起止时间换算为毫秒
+- 旧记录的 `pause_duration` 设为 0
 
 数据库生命周期：
 
