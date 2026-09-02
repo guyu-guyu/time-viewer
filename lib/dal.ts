@@ -142,7 +142,7 @@ export async function getDailyTotals(
     })
     .from(entries)
     .where(and(gte(entries.startTime, start), lt(entries.startTime, end), matchFilter(filter)))
-    .groupBy(sql`1`, projectExpr);
+    .groupBy(sql`1`, entries.projectName);
 
   const totals = new Map<string, DailyTotal>();
   for (const row of rows) {
@@ -168,7 +168,7 @@ export async function getProjectBreakdown(
     .select({ projectName: projectExpr, minutes: minutesExpr })
     .from(entries)
     .where(and(gte(entries.startTime, start), lt(entries.startTime, end), matchFilter(filter)))
-    .groupBy(projectExpr);
+    .groupBy(entries.projectName);
   return rows.sort((a, b) => b.minutes - a.minutes);
 }
 
@@ -186,7 +186,7 @@ export async function getTaskBreakdown(
     })
     .from(entries)
     .where(and(gte(entries.startTime, start), lt(entries.startTime, end), matchFilter(filter)))
-    .groupBy(taskExpr, projectExpr);
+    .groupBy(entries.taskTitle, entries.projectName);
   return rows.sort((a, b) => b.minutes - a.minutes).slice(0, 10);
 }
 
