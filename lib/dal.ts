@@ -155,7 +155,7 @@ export async function getDailyTotals(
     })
     .from(entries)
     .where(and(gte(entries.startTime, start), lt(entries.startTime, end), matchFilter(filter)))
-    .groupBy(sql`1`, entries.projectName);
+    .groupBy(sql`1`, entries.projectName, entries.category);
 
   const totals = new Map<string, DailyTotal>();
   for (const row of rows) {
