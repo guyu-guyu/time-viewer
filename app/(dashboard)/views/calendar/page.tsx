@@ -1,5 +1,5 @@
 import { FilterBar } from "@/components/filter-bar";
-import { getDailyTotals, getProjects } from "@/lib/dal";
+import { getCategories, getDailyTotals, getProjects } from "@/lib/dal";
 import { parseCommon, parseMonthParam } from "@/lib/filters";
 import { currentMonthStr, monthRange } from "@/lib/time";
 
@@ -19,15 +19,16 @@ export default async function CalendarPage({
   const month = parseMonthParam(sp, currentMonthStr());
   const range = monthRange(month);
   const filter = parseCommon(sp);
-  const [totals, projects] = await Promise.all([
+  const [totals, projects, categories] = await Promise.all([
     getDailyTotals(range, filter),
     getProjects(),
+    getCategories(),
   ]);
 
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-xl font-semibold">月历 · {month}</h1>
-      <FilterBar mode="month" projects={projects} defaults={{ month }} />
+      <FilterBar mode="month" projects={projects} categories={categories} defaults={{ month }} />
       <CalendarHeatmap month={month} totals={totals} />
     </div>
   );

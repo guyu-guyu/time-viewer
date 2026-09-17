@@ -8,9 +8,12 @@ import { db } from "./db";
 import { entries } from "./schema";
 import { addDay, dayStartInTz, getDisplayTz } from "./time";
 import {
+  UNASSIGNED_CATEGORY,
+  UNASSIGNED_CATEGORY_FILTER,
   UNASSIGNED_PROJECT,
   UNASSIGNED_PROJECT_FILTER,
   UNASSIGNED_TASK,
+  type CategoryTotal,
   type CommonFilter,
   type DailyTotal,
   type EntryDTO,
@@ -33,6 +36,13 @@ function matchFilter(filter: CommonFilter) {
       filter.projectName === UNASSIGNED_PROJECT_FILTER
         ? isNull(entries.projectName)
         : eq(entries.projectName, filter.projectName),
+    );
+  }
+  if (filter.category) {
+    conditions.push(
+      filter.category === UNASSIGNED_CATEGORY_FILTER
+        ? isNull(entries.category)
+        : eq(entries.category, filter.category),
     );
   }
   if (filter.q) {
@@ -58,6 +68,7 @@ const minutesExpr = sql<number>`
   coalesce(round(sum(${entries.duration}) / 60000.0)::int, 0)
 `;
 const projectExpr = sql<string>`coalesce(${entries.projectName}, ${UNASSIGNED_PROJECT})`;
+const categoryExpr = sql<string>`coalesce(${entries.category}, ${UNASSIGNED_CATEGORY})`;
 const taskExpr = sql<string>`coalesce(${entries.taskTitle}, ${UNASSIGNED_TASK})`;
 
 const entryColumns = {
@@ -66,6 +77,7 @@ const entryColumns = {
   note: entries.note,
   taskTitle: entries.taskTitle,
   projectName: entries.projectName,
+  category: entries.category,
   startTime: entries.startTime,
   endTime: entries.endTime,
   duration: entries.duration,
@@ -138,6 +150,7 @@ export async function getDailyTotals(
     .select({
       day: sql<string>`to_char(${entries.startTime} AT TIME ZONE ${tz}, 'YYYY-MM-DD')`,
       projectName: projectExpr,
+      category: categoryExpr,
       minutes: minutesExpr,
     })
     .from(entries)
@@ -150,9 +163,11 @@ export async function getDailyTotals(
       date: row.day,
       totalMinutes: 0,
       byProject: {},
+      byCategory: {},
     };
     daily.totalMinutes += row.minutes;
     daily.byProject[row.projectName] = (daily.byProject[row.projectName] ?? 0) + row.minutes;
+    daily.byCategory[row.category] = (daily.byCategory[row.category] ?? 0) + row.minutes;
     totals.set(row.day, daily);
   }
   return [...totals.values()].sort((a, b) => a.date.localeCompare(b.date));
@@ -169,6 +184,21 @@ export async function getProjectBreakdown(
     .from(entries)
     .where(and(gte(entries.startTime, start), lt(entries.startTime, end), matchFilter(filter)))
     .groupBy(entries.projectName);
+  return rows.sort((a, b) => b.minutes - a.minutes);
+}
+
+/** 按类别汇总（与 getProjectBreakdown 同构，维度换成 category） */
+export async function getCategoryBreakdown(
+  range: { from: string; to: string },
+  filter: CommonFilter,
+): Promise<CategoryTotal[]> {
+  await requireOwner();
+  const { start, end } = rangeToInstants(range);
+  const rows = await db
+    .select({ category: categoryExpr, minutes: minutesExpr })
+    .from(entries)
+    .where(and(gte(entries.startTime, start), lt(entries.startTime, end), matchFilter(filter)))
+    .groupBy(entries.category);
   return rows.sort((a, b) => b.minutes - a.minutes);
 }
 
@@ -201,5 +231,19 @@ export async function getProjects(): Promise<string[]> {
   return [
     UNASSIGNED_PROJECT_FILTER,
     ...rows.flatMap((row) => (row.projectName ? [row.projectName] : [])),
+  ];
+}
+
+/** 筛选下拉的选项：去重非空类别 */
+export async function getCategories(): Promise<string[]> {
+  await requireOwner();
+  const rows = await db
+    .selectDistinct({ category: entries.category })
+    .from(entries)
+    .where(isNotNull(entries.category))
+    .orderBy(entries.category);
+  return [
+    UNASSIGNED_CATEGORY_FILTER,
+    ...rows.flatMap((row) => (row.category ? [row.category] : [])),
   ];
 }

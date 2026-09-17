@@ -13,15 +13,21 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { addDay, addMonth } from "@/lib/time";
-import { UNASSIGNED_PROJECT, UNASSIGNED_PROJECT_FILTER } from "@/lib/types";
+import {
+  UNASSIGNED_CATEGORY,
+  UNASSIGNED_CATEGORY_FILTER,
+  UNASSIGNED_PROJECT,
+  UNASSIGNED_PROJECT_FILTER,
+} from "@/lib/types";
 
 type Props = {
   projects: string[];
+  categories: string[];
   mode: "date" | "month" | "range";
   defaults: { date?: string; month?: string; from?: string; to?: string };
 };
 
-export function FilterBar({ projects, mode, defaults }: Props) {
+export function FilterBar({ projects, categories, mode, defaults }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const sp = useSearchParams();
@@ -121,6 +127,25 @@ export function FilterBar({ projects, mode, defaults }: Props) {
           {projects.map((project) => (
             <SelectItem key={project} value={project}>
               {project === UNASSIGNED_PROJECT_FILTER ? UNASSIGNED_PROJECT : project}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+
+      <Select
+        value={sp.get("category") ?? "all"}
+        onValueChange={(v) =>
+          update((p) => (v && v !== "all" ? p.set("category", v) : p.delete("category")))
+        }
+      >
+        <SelectTrigger className="w-28">
+          <SelectValue placeholder="全部类别" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">全部类别</SelectItem>
+          {categories.map((category) => (
+            <SelectItem key={category} value={category}>
+              {category === UNASSIGNED_CATEGORY_FILTER ? UNASSIGNED_CATEGORY : category}
             </SelectItem>
           ))}
         </SelectContent>

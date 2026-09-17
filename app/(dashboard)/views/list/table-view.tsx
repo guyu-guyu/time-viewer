@@ -6,7 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { projectColor } from "@/lib/colors";
+import { categoryColor, projectColor } from "@/lib/colors";
 import {
   dayKeyOf,
   formatDuration,
@@ -16,6 +16,7 @@ import {
 } from "@/lib/time";
 import {
   ENTRY_TYPE_LABELS,
+  UNASSIGNED_CATEGORY,
   UNASSIGNED_PROJECT,
   type EntryDTO,
 } from "@/lib/types";
@@ -32,6 +33,7 @@ export function TableView({ rows }: { rows: EntryDTO[] }) {
             <TableHead className="w-20">时长</TableHead>
             <TableHead className="w-20">暂停</TableHead>
             <TableHead className="w-20">类型</TableHead>
+            <TableHead className="w-20">类别</TableHead>
             <TableHead className="w-32">项目</TableHead>
             <TableHead className="w-40">任务</TableHead>
             <TableHead>备注</TableHead>
@@ -41,13 +43,14 @@ export function TableView({ rows }: { rows: EntryDTO[] }) {
         <TableBody>
           {rows.length === 0 && (
             <TableRow>
-              <TableCell colSpan={9} className="text-center text-muted-foreground">
+              <TableCell colSpan={10} className="text-center text-muted-foreground">
                 无匹配记录
               </TableCell>
             </TableRow>
           )}
           {rows.map((row) => {
             const projectName = row.projectName ?? UNASSIGNED_PROJECT;
+            const category = row.category ?? UNASSIGNED_CATEGORY;
             return (
               <TableRow key={row.id}>
                 <TableCell>{dayKeyOf(row.startTime, tz)}</TableCell>
@@ -59,6 +62,15 @@ export function TableView({ rows }: { rows: EntryDTO[] }) {
                   {formatDuration(millisecondsToMinutes(row.pauseDuration))}
                 </TableCell>
                 <TableCell>{ENTRY_TYPE_LABELS[row.type]}</TableCell>
+                <TableCell>
+                  <span className="flex items-center gap-1.5">
+                    <span
+                      className="inline-block size-2 rounded-full"
+                      style={{ background: categoryColor(category) }}
+                    />
+                    {category}
+                  </span>
+                </TableCell>
                 <TableCell>
                   <span className="flex items-center gap-1.5">
                     <span

@@ -3,14 +3,27 @@ import { parseCommon, parseDateParam, parseMonthParam, parsePage, parseRange } f
 
 describe("parseCommon", () => {
   it("空/空白参数返回 null", () => {
-    expect(parseCommon({})).toEqual({ projectName: null, q: null });
-    expect(parseCommon({ project: "  ", q: "" })).toEqual({ projectName: null, q: null });
+    expect(parseCommon({})).toEqual({ projectName: null, category: null, q: null });
+    expect(parseCommon({ project: "  ", q: "" })).toEqual({
+      projectName: null,
+      category: null,
+      q: null,
+    });
   });
 
   it("正常读取并去首尾空白", () => {
     expect(parseCommon({ project: " time-viewer ", q: "重构" })).toEqual({
       projectName: "time-viewer",
+      category: null,
       q: "重构",
+    });
+  });
+
+  it("category 精确读取", () => {
+    expect(parseCommon({ category: " 工作 " })).toEqual({
+      projectName: null,
+      category: "工作",
+      q: null,
     });
   });
 });

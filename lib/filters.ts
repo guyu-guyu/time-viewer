@@ -3,11 +3,16 @@ import type { CommonFilter } from "./types";
 
 export type SP = Record<string, string | undefined>;
 
-/** 共享筛选：project 精确匹配，q 模糊匹配任务、项目和备注；空白视为未选 */
+/** 共享筛选：project/category 精确匹配，q 模糊匹配任务、项目和备注；空白视为未选 */
 export function parseCommon(sp: SP): CommonFilter {
   const projectName = (sp.project ?? "").trim();
+  const category = (sp.category ?? "").trim();
   const q = (sp.q ?? "").trim();
-  return { projectName: projectName || null, q: q || null };
+  return {
+    projectName: projectName || null,
+    category: category || null,
+    q: q || null,
+  };
 }
 
 /** timeline 主参数：单日 YYYY-MM-DD，非法回退 fallback */

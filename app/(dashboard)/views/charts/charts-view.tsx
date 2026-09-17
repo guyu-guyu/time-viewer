@@ -14,17 +14,19 @@ import {
   YAxis,
 } from "recharts";
 
-import { projectColor } from "@/lib/colors";
+import { categoryColor, projectColor } from "@/lib/colors";
 import { formatDuration } from "@/lib/time";
-import type { DailyTotal, ProjectTotal, TaskTotal } from "@/lib/types";
+import type { CategoryTotal, DailyTotal, ProjectTotal, TaskTotal } from "@/lib/types";
 
 export function ChartsView({
   daily,
   projectTotals,
+  categoryTotals,
   tasks,
 }: {
   daily: DailyTotal[];
   projectTotals: ProjectTotal[];
+  categoryTotals: CategoryTotal[];
   tasks: TaskTotal[];
 }) {
   const dailyData = daily.map((item) => ({
@@ -34,6 +36,10 @@ export function ChartsView({
   const pieData = projectTotals.map((project) => ({
     name: project.projectName,
     value: project.minutes,
+  }));
+  const categoryPieData = categoryTotals.map((c) => ({
+    name: c.category,
+    value: c.minutes,
   }));
   const topData = tasks.map((task) => ({
     name: task.taskTitle,
@@ -54,6 +60,29 @@ export function ChartsView({
               <Tooltip formatter={(value) => [formatDuration(Number(value)), "时长"]} />
               <Bar dataKey="minutes" fill="#2563eb" radius={[3, 3, 0, 0]} />
             </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </section>
+
+      <section>
+        <h2 className="mb-3 text-sm font-medium text-muted-foreground">类别占比</h2>
+        <div className="h-64">
+          <ResponsiveContainer>
+            <PieChart>
+              <Pie
+                data={categoryPieData}
+                dataKey="value"
+                nameKey="name"
+                innerRadius="55%"
+                outerRadius="80%"
+              >
+                {categoryPieData.map((c) => (
+                  <Cell key={c.name} fill={categoryColor(c.name)} />
+                ))}
+              </Pie>
+              <Tooltip formatter={(value) => formatDuration(Number(value))} />
+              <Legend />
+            </PieChart>
           </ResponsiveContainer>
         </div>
       </section>

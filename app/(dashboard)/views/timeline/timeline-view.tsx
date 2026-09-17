@@ -1,6 +1,6 @@
 "use client";
 
-import { projectColor } from "@/lib/colors";
+import { categoryColor, projectColor } from "@/lib/colors";
 import {
   dayEndInTz,
   dayStartInTz,
@@ -10,6 +10,7 @@ import {
 } from "@/lib/time";
 import {
   ENTRY_TYPE_LABELS,
+  UNASSIGNED_CATEGORY,
   UNASSIGNED_PROJECT,
   UNASSIGNED_TASK,
   type EntryDTO,
@@ -38,18 +39,23 @@ export function TimelineView({
       (totals[projectName] ?? 0) + millisecondsToMinutes(entry.duration);
     return totals;
   }, {});
+  const byCategory = entries.reduce<Record<string, number>>((totals, entry) => {
+    const category = entry.category ?? UNASSIGNED_CATEGORY;
+    totals[category] = (totals[category] ?? 0) + millisecondsToMinutes(entry.duration);
+    return totals;
+  }, {});
 
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
         <span>合计 {formatDuration(totalMinutes)}</span>
-        {Object.entries(byProject).map(([projectName, minutes]) => (
-          <span key={projectName} className="flex items-center gap-1">
+        {Object.entries(byCategory).map(([category, minutes]) => (
+          <span key={category} className="flex items-center gap-1">
             <span
               className="inline-block size-2 rounded-full"
-              style={{ background: projectColor(projectName) }}
+              style={{ background: categoryColor(category) }}
             />
-            {projectName} {formatDuration(minutes)}
+            {category} {formatDuration(minutes)}
           </span>
         ))}
       </div>
@@ -71,6 +77,7 @@ export function TimelineView({
         ))}
         {entries.map((entry) => {
           const projectName = entry.projectName ?? UNASSIGNED_PROJECT;
+          const category = entry.category ?? UNASSIGNED_CATEGORY;
           const taskTitle = entry.taskTitle ?? UNASSIGNED_TASK;
           const durationMinutes = millisecondsToMinutes(entry.duration);
           const pauseMinutes = millisecondsToMinutes(entry.pauseDuration);
@@ -79,7 +86,7 @@ export function TimelineView({
           const height =
             ((clippedEnd - entry.startTime.getTime()) / 3_600_000) * HOUR_PX;
           const details = [
-            `${taskTitle} · ${projectName}`,
+            `${taskTitle} · ${projectName} · ${category}`,
             `${formatTimeInTz(entry.startTime, tz)}–${formatTimeInTz(entry.endTime, tz)}`,
             `${ENTRY_TYPE_LABELS[entry.type]} · ${formatDuration(durationMinutes)}`,
             pauseMinutes > 0 ? `暂停 ${formatDuration(pauseMinutes)}` : null,
@@ -96,7 +103,7 @@ export function TimelineView({
               style={{
                 top,
                 height: Math.max(height, 4),
-                background: projectColor(projectName),
+                background: categoryColor(category),
               }}
             >
               {height > 24 ? `${taskTitle} · ${formatDuration(durationMinutes)}` : ""}

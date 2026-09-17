@@ -9,6 +9,7 @@ export const entries = pgTable(
     note: text("note"),
     taskTitle: text("task_title"),
     projectName: text("project_name"),
+    category: text("category"),
     startTime: timestamp("start_time", { withTimezone: true }).notNull(),
     endTime: timestamp("end_time", { withTimezone: true }).notNull(),
     duration: integer("duration").notNull(),
